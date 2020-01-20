@@ -16,12 +16,20 @@ public class CrosshairManager : MonoBehaviour
 
     void Start()
     {
-        m_WeaponsManager = GameObject.FindObjectOfType<PlayerWeaponsManager>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, CrosshairManager>(m_WeaponsManager, this);
+        foreach (var wpnMgr in GameObject.FindObjectsOfType<PlayerWeaponsManager>())
+        {
+            if (wpnMgr != null && wpnMgr.isActiveAndEnabled)
+            {
+                m_WeaponsManager = wpnMgr;
+                DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, CrosshairManager>(m_WeaponsManager, this);
 
-        OnWeaponChanged(m_WeaponsManager.GetActiveWeapon());
+                OnWeaponChanged(m_WeaponsManager.GetActiveWeapon());
 
-        m_WeaponsManager.onSwitchedToWeapon += OnWeaponChanged;
+                m_WeaponsManager.onSwitchedToWeapon += OnWeaponChanged;
+
+                break;
+            }
+        }
     }
 
     void Update()
