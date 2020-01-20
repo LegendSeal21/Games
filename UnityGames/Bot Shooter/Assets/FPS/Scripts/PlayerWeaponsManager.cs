@@ -13,6 +13,13 @@ public class PlayerWeaponsManager : MonoBehaviour
         PutUpNew,
     }
 
+    public enum Handedness
+    {
+        Unknown,
+        Left,
+        Right
+    }
+
     [Tooltip("List of weapon the player will start with")]
     public List<WeaponController> startingWeapons = new List<WeaponController>();
 
@@ -57,6 +64,8 @@ public class PlayerWeaponsManager : MonoBehaviour
     public float weaponSwitchDelay = 1f;
     [Tooltip("Layer to set FPS weapon gameObjects to")]
     public LayerMask FPSWeaponLayer;
+    [Tooltip("Which hand owns this weapon manager")]
+    public Handedness Hand = Handedness.Unknown;
 
     public bool isAiming { get; private set; }
     public bool isPointingAtEnemy { get; private set; }
@@ -100,6 +109,12 @@ public class PlayerWeaponsManager : MonoBehaviour
             AddWeapon(weapon);
         }
         SwitchWeapon(true);
+
+        // Turn off left hand by default
+        if (Hand == Handedness.Left)
+        {
+            enabled = false;
+        }
     }
 
     private void Update()
