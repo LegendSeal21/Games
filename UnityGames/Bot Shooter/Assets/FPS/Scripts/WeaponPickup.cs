@@ -26,15 +26,17 @@ public class WeaponPickup : MonoBehaviour
 
     void OnPicked(PlayerCharacterController byPlayer)
     {
-        PlayerWeaponsManager playerWeaponsManager = byPlayer.GetComponent<PlayerWeaponsManager>();
-        if (playerWeaponsManager)
+        Debug.Log("Wassup, piccking sumpin");
+
+        var playerWeaponsManagers = byPlayer.GetComponents<PlayerWeaponsManager>();
+        foreach (var mgr in playerWeaponsManagers)
         {
-            if (playerWeaponsManager.AddWeapon(weaponPrefab))
+            if (mgr.AddWeapon(weaponPrefab))
             {
                 // Handle auto-switching to weapon if no weapons currently
-                if (playerWeaponsManager.GetActiveWeapon() == null)
+                if (mgr.GetActiveWeapon() == null)
                 {
-                    playerWeaponsManager.SwitchWeapon(true);
+                    mgr.SwitchWeapon(true);
                 }
 
                 m_Pickup.PlayPickupFeedback();
